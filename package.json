@@ -1,0 +1,23 @@
+{
+  "name": "inventory-admin",
+  "version": "1.0.0",
+  "description": ":dark_sunglasses: A online shop for men's clothing ",
+  "main": "index.js",
+  "repository": "https://github.com/ChalkPE/inventory-admin.git",
+  "author": "ChalkPE <chalk@chalk.pe>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "vue": "^2.5.13"
+  },
+  "devDependencies": {
+    "@neutrinojs/standardjs": "^8.0.14",
+    "@neutrinojs/vue": "^8.0.14",
+    "neutrino": "^8.0.14"
+  },
+  "scripts": {
+    "build": "neutrino build",
+    "start": "neutrino start",
+    "lint": "neutrino lint"
+  }
+}
