@@ -1,10 +1,10 @@
 <script>
-  export default {
-    name: 'App',
-    data() {
-      return {};
-    }
-  };
+export default {
+  name: 'App',
+  data () {
+    return {}
+  }
+}
 </script>
 
 <template>
