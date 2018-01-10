@@ -1,8 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import actions from './actions'
+import mutations from './mutations'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  // TODO :thinking_face:
+  state: {
+    token: null,
+    authError: null
+  },
+
+  getters: {
+    loggedIn: state => state.token !== null,
+    hasAuthError: state => state.authError !== null
+  },
+
+  actions,
+  mutations
 })

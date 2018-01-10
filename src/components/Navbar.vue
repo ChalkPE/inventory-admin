@@ -9,7 +9,9 @@
           span
       #menu.navbar-menu(:class='{ "is-active": active }')
         .navbar-start
-          router-link.navbar-item(v-for='m of menus', :key='m.name', :to='m.path') {{ m.name }}
+          router-link.navbar-item(v-for='m of menus.start', :key='m.name', :to='m.path') {{ m.name }}
+        .navbar-end
+          router-link.navbar-item(:to='menus.auth.path') {{ menus.auth.name }}
 </template>
 
 <script>
