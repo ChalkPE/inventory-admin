@@ -6,8 +6,8 @@ module.exports = {
       html: {
         title: 'inventory-admin'
       },
-      style: {
-        loaders: ['sass-loader']
+      devServer: {
+        proxy: { '**': 'http://localhost:8080' }
       }
     }]
   ]
