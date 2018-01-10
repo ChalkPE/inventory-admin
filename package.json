@@ -8,12 +8,16 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "bulma": "^0.6.1",
     "vue": "^2.5.13"
   },
   "devDependencies": {
     "@neutrinojs/standardjs": "^8.0.14",
     "@neutrinojs/vue": "^8.0.14",
-    "neutrino": "^8.0.14"
+    "neutrino": "^8.0.14",
+    "node-sass": "^4.7.2",
+    "pug": "^2.0.0-rc.4",
+    "sass-loader": "^6.0.6"
   },
   "scripts": {
     "build": "neutrino build",
