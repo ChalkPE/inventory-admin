@@ -1,7 +1,7 @@
 <template lang="pug">
-  #adminList
+  .block
     h1.title 운영자 목록
-    table.table.is-striped.is-bordered
+    table.table.is-striped.is-bordered.is-fullwidth
       thead: tr: th(v-for='h in heads') {{ h }}
       tbody: tr(v-for='admin of list')
         td: b {{ admin.username }}

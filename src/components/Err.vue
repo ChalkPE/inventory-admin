@@ -1,10 +1,8 @@
 <template lang="pug">
-  section.section(v-if='err'): .container
-    h1.title 오류가 발생했습니다
-    .notification.is-danger
-      b {{ message }}
-      br
-      | {{ status }} - {{ response.data }}
+  .block(v-if='err')
+    article.message.is-danger
+      .message-header: p {{ message }}
+      .message-body {{ status }}: {{ response.data }}
 </template>
 
 <script>

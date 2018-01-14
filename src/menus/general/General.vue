@@ -1,23 +1,20 @@
 <template lang="pug">
-  #general
-    section.hero.is-info: .hero-body: .container
-      h1.title 운영자 관리
+  section.section: .container
     err(:err='err')
-    section.section: .container
-      admin-list(:list='list')
-      hr
-      h1.title 운영자 추가 등록
+    admin-list(:list='list')
+    add-admin
 </template>
 
 <script>
+import api from '../../api'
 import { mapState } from 'vuex'
 
-import api from '../../api'
-import Err from '../../components/Err.vue'
+import AddAdmin from './AddAdmin.vue'
 import AdminList from './AdminList.vue'
+import Err from '../../components/Err.vue'
 
 export default {
-  components: { Err, AdminList },
+  components: { Err, AdminList, AddAdmin },
   computed: mapState(['token']),
   data: () => ({ err: null, list: [] }),
 
@@ -29,7 +26,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>
