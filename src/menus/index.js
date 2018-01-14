@@ -1,5 +1,5 @@
 import Auth from './Auth.vue'
-import General from './General.vue'
+import General from './general/General.vue'
 import Goods from './Goods.vue'
 import Order from './Order.vue'
 import Member from './Member.vue'
