@@ -1,8 +1,9 @@
 <template lang="pug">
   section.section: .container
-    err(:err='err')
-    admin-list
-    admin-add
+    err(v-if='err', :err='err')
+    template(v-else)
+      admin-list
+      admin-add
 </template>
 
 <script>
