@@ -15,12 +15,13 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (!to.meta.requiresAuth) return next()
-
   const { $store } = this.a.app
-  if ($store.getters.loggedIn) return next()
+  const { loggedIn } = $store.getters
+  const { requiresAuth } = to.meta
 
-  next('/auth')
+  if (requiresAuth && !loggedIn) return next('/auth')
+  if (to.name === '로그인' && loggedIn) return next(false)
+  return next()
 })
 
 export default router

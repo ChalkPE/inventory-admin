@@ -12,5 +12,9 @@ export default {
       ctx.commit(types.AUTH_ERROR, err.response.data)
       return false
     }
+  },
+
+  signOut (ctx) {
+    ctx.commit(types.UPDATE_TOKEN, null)
   }
 }
