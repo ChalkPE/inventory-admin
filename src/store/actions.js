@@ -8,5 +8,9 @@ export default {
 
   signOut (ctx) {
     ctx.commit(types.UPDATE_TOKEN, null)
+  },
+
+  async getAdmins ({ commit, state }) {
+    commit(types.UPDATE_ADMINS, await api.getAdmin(state.token))
   }
 }

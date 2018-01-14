@@ -1,28 +1,24 @@
 <template lang="pug">
   section.section: .container
     err(:err='err')
-    admin-list(:list='list')
-    add-admin
+    admin-list
+    admin-add
 </template>
 
 <script>
-import api from '../../api'
-import { mapState } from 'vuex'
+import { mapActions } from 'vuex'
 
-import AddAdmin from './AddAdmin.vue'
+import AdminAdd from './AdminAdd.vue'
 import AdminList from './AdminList.vue'
 import Err from '../../components/Err.vue'
 
 export default {
-  components: { Err, AdminList, AddAdmin },
-  computed: mapState(['token']),
-  data: () => ({ err: null, list: [] }),
+  data: () => ({ err: null }),
+  components: { Err, AdminList, AdminAdd },
 
+  methods: mapActions(['getAdmins']),
   mounted () {
-    api
-      .getAdmin(this.token)
-      .then(list => (this.list = list))
-      .catch(err => console.error(this.err = err))
+    this.getAdmins().catch(err => (this.err = err))
   }
 }
 </script>

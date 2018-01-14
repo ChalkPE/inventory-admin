@@ -7,7 +7,10 @@ import mutations from './mutations'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: { token: null },
+  state: {
+    token: null,
+    admins: []
+  },
 
   getters: {
     loggedIn: state => state.token !== null
