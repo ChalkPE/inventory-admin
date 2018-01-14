@@ -8,6 +8,7 @@ export default {
 
   signOut (ctx) {
     ctx.commit(types.UPDATE_TOKEN, null)
+    ctx.commit(types.UPDATE_ADMINS, [])
   },
 
   async getAdmins ({ commit, state }) {
@@ -16,6 +17,11 @@ export default {
 
   async deleteAdmin ({ commit, state, dispatch }, admin) {
     await api.deleteAdmin(state.token, admin)
+    await dispatch('getAdmins')
+  },
+
+  async addAdmin ({ commit, state, dispatch }, payload) {
+    await api.addAdmin(state.token, payload)
     await dispatch('getAdmins')
   }
 }

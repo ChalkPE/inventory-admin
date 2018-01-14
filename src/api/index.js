@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const h = token => ({ Authorization: `Bearer ${token}` })
+const h = token => ({ headers: { Authorization: `Bearer ${token}` } })
 
 export default {
   async auth (payload) {
@@ -9,12 +9,17 @@ export default {
   },
 
   async getAdmin (token) {
-    const res = await axios.get('/admin', { headers: h(token) })
+    const res = await axios.get('/admin', h(token))
     return res.data.list
   },
 
   async deleteAdmin (token, { username }) {
-    const res = await axios.delete(`/admin/${username}`, { headers: h(token) })
+    const res = await axios.delete(`/admin/${username}`, h(token))
+    return res.data.success
+  },
+
+  async addAdmin (token, payload) {
+    const res = await axios.post('/admin', payload, h(token))
     return res.data.success
   }
 }
