@@ -12,5 +12,10 @@ export default {
 
   async getAdmins ({ commit, state }) {
     commit(types.UPDATE_ADMINS, await api.getAdmin(state.token))
+  },
+
+  async deleteAdmin ({ commit, state, dispatch }, admin) {
+    await api.deleteAdmin(state.token, admin)
+    await dispatch('getAdmins')
   }
 }

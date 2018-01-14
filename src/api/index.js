@@ -11,5 +11,10 @@ export default {
   async getAdmin (token) {
     const res = await axios.get('/admin', { headers: h(token) })
     return res.data.list
+  },
+
+  async deleteAdmin (token, { username }) {
+    const res = await axios.delete(`/admin/${username}`, { headers: h(token) })
+    return res.data.success
   }
 }
