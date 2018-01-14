@@ -7,14 +7,10 @@ import mutations from './mutations'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-    token: null,
-    authError: null
-  },
+  state: { token: null },
 
   getters: {
-    loggedIn: state => state.token !== null,
-    hasAuthError: state => state.authError !== null
+    loggedIn: state => state.token !== null
   },
 
   actions,
