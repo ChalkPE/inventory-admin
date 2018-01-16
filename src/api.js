@@ -21,5 +21,10 @@ export default {
   async addAdmin (token, payload) {
     const res = await axios.post('/admin', payload, h(token))
     return res.data.success
+  },
+
+  async getPost (token) {
+    const res = await axios.get('/admin/post', h(token))
+    return res.data.posts
   }
 }
