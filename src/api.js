@@ -31,5 +31,10 @@ export default {
   async deletePost (token, { productURL }) {
     const res = await axios.delete(`/admin/post/${productURL}`, h(token))
     return res.data.success
+  },
+
+  async getMember (token) {
+    const res = await axios.get('/admin/user', h(token))
+    return res.data.users
   }
 }
