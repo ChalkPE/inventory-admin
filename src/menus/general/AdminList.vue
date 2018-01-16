@@ -1,6 +1,6 @@
 <template lang="pug">
   .block
-    h1.title 운영자 목록
+    h1.title 운영자 목록 ({{ admins.length }})
     table.table.is-striped.is-bordered.is-fullwidth
       thead: tr: th(v-for='h in heads') {{ h }}
       tbody: tr(v-for='admin of admins', :key='admin.username')
@@ -10,8 +10,6 @@
         td {{ date(admin.joinedDate) }}
         td {{ admin.master ? '마스터' : '' }}
         td: button.button.is-small(@click='remove(admin)') 삭제
-    | 현재 총 <b>{{ admins.length }}명</b>의 관리자가 있습니다.
-    | 다른 관리자를 더 추가하려면 <b>마스터 계정</b>으로 로그인하세요.
 </template>
 
 <script>

@@ -2,7 +2,7 @@
   section.section: .container
     error-block(:err='err')
     .block
-      h1.title 상품 목록
+      h1.title 상품 목록 ({{ posts.length }})
       table.table.is-striped.is-bordered.is-fullwidth
         thead: tr: th(v-for='h in heads') {{ h }}
         tbody: tr(v-for='post of posts', :key='post.productURL')
@@ -46,11 +46,11 @@ export default {
     },
 
     remove (post) {
-      // WIP
       if (!confirm(`${post.productTitle} 상품을 제거할까요?`)) return
 
-      this
-        .deletePost(post)
+      api
+        .deletePost(this.token, post)
+        .then(() => this.getPost())
         .catch(err => alert(err.response.data))
     }
   }

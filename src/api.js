@@ -26,5 +26,10 @@ export default {
   async getPost (token) {
     const res = await axios.get('/admin/post', h(token))
     return res.data.posts
+  },
+
+  async deletePost (token, { productURL }) {
+    const res = await axios.delete(`/admin/post/${productURL}`, h(token))
+    return res.data.success
   }
 }
