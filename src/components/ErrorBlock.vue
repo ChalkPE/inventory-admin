@@ -2,7 +2,7 @@
   .block(v-if='err')
     article.message.is-danger
       .message-header: p {{ message }}
-      .message-body {{ status }}: {{ response.data }}
+      .message-body {{ status }}
 </template>
 
 <script>
@@ -11,7 +11,11 @@ export default {
   computed: {
     message () { return this.err.message },
     response () { return this.err.response },
-    status () { return this.response.status + ' ' + this.response.statusText }
+    status () {
+      return this.response
+        ? `${this.response.status} ${this.response.statusText}: ${this.response.data}`
+        : 'No response :('
+    }
   }
 }
 </script>

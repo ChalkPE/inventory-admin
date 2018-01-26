@@ -3,13 +3,13 @@
     error-block(:err='err')
     h1.title 상품 목록 ({{ posts.length }})
     mongo-table(:schema='schema', :list='posts')
-      template(slot-scope='post', slot='productTitle'): b {{ post.it }}
-      template(slot-scope='post', slot='productSubTitle') {{ post.it }}
-      template(slot-scope='post', slot='productCategory') {{ post.it }}
-      template(slot-scope='post', slot='productPrice') {{ post.it.toFixed(2) }}
-      template(slot-scope='post', slot='seller') {{ post.it }}
-      template(slot-scope='post', slot='uploadDate') {{ post.it | date }}
-      template(slot-scope='post', slot='remove'): button.button.is-small(@click='remove(post.item)') 삭제
+      template(slot-scope='p', slot='productTitle'): b {{ p.it }}
+      template(slot-scope='p', slot='productSubTitle') {{ p.it }}
+      template(slot-scope='p', slot='productCategory') {{ p.it }}
+      template(slot-scope='p', slot='productPrice') {{ p.it.toFixed(2) }}
+      template(slot-scope='p', slot='seller') {{ p.it }}
+      template(slot-scope='p', slot='uploadDate') {{ p.it | date }}
+      template(slot-scope='p', slot='remove'): button.button.is-small(@click='remove(p.v)') 삭제
 </template>
 
 <script>
@@ -29,45 +29,37 @@ export default {
     posts: [],
 
     schema: {
-      slots: [
-        {
-          key: 'productTitle',
-          displayName: '상품명',
-          sort: (a, b) => a.localeCompare(b)
-        },
+      productTitle: {
+        displayName: '상품명',
+        sort: (a, b) => a.localeCompare(b)
+      },
 
-        {
-          key: 'productSubTitle',
-          displayName: '디자이너',
-          sort: (a, b) => a.localeCompare(b)
-        },
+      productSubTitle: {
+        displayName: '디자이너',
+        sort: (a, b) => a.localeCompare(b)
+      },
 
-        {
-          key: 'productCategory',
-          displayName: '카테고리',
-          sort: (a, b) => a.localeCompare(b)
-        },
+      productCategory: {
+        displayName: '카테고리',
+        sort: (a, b) => a.localeCompare(b)
+      },
 
-        {
-          key: 'productPrice',
-          displayName: '판매가',
-          sort: (a, b) => a - b
-        },
+      productPrice: {
+        displayName: '판매가',
+        sort: (a, b) => a - b
+      },
 
-        {
-          key: 'seller',
-          displayName: '판매자',
-          sort: (a, b) => a.localeCompare(b)
-        },
+      seller: {
+        displayName: '판매자',
+        sort: (a, b) => a.localeCompare(b)
+      },
 
-        {
-          key: 'uploadDate',
-          displayName: '등록일/수정일',
-          sort: (a, b) => moment(a).diff(moment(b))
-        },
+      uploadDate: {
+        displayName: '등록일/수정일',
+        sort: (a, b) => moment(a).diff(moment(b))
+      },
 
-        { key: 'remove', displayName: '삭제' }
-      ]
+      remove: { displayName: '삭제' }
     }
   }),
 
@@ -79,7 +71,10 @@ export default {
     getPost () {
       api
         .getPost(this.token)
-        .then(posts => (this.posts = posts))
+        .then(posts => {
+          this.err = null
+          this.posts = posts
+        })
         .catch(err => (this.err = err))
     },
 

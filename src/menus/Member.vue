@@ -1,35 +1,42 @@
 <template lang="pug">
   section.section: .container
     error-block(:err='err')
-    .block
-      h1.title 회원 목록 ({{ members.length }})
-      table.table.is-striped.is-bordered.is-fullwidth
-        thead: tr: th(v-for='h in heads') {{ h }}
-        tbody: tr(v-for='member of members', :key='member.username')
-          td: b {{ member.username }}
-          td {{ member.firstName }} {{ member.lastName }}
-          td {{ date(member.joinedDate) }}
-          td: a(:href='mailto(member)') {{ member.email }}
-          td {{ member.newsletter ? '예' : '아니오' }}
-          td {{ member.gender }}
-          td {{ member.country }}
-          td: button.button.is-small(@click='remove(member)') 제재
+    h1.title 회원 목록 ({{ members.length }})
+    mongo-table(:schema='schema', :list='members')
+      template(slot-scope='m', slot='username'): b {{ m.it }}
+      template(slot-scope='m', slot='fullName') {{ m.v.firstName }} {{ m.v.lastName }}
+      template(slot-scope='m', slot='joinedDate') {{ m.it | date }}
+      template(slot-scope='m', slot='email'): a(:href='m.it | mailto') {{ m.it }}
+      template(slot-scope='m', slot='newsletter') {{ m.it | bool }}
+      template(slot-scope='m', slot='gender') {{ m.it }}
+      template(slot-scope='m', slot='country') {{ m.it }}
+      template(slot-scope='m', slot='remove'): button.button.is-small(@click='remove(m.v)') 제재
 </template>
 
 <script>
 import api from '../api'
 import moment from 'moment'
 import { mapState } from 'vuex'
+import MongoTable from '../components/MongoTable.vue'
 import ErrorBlock from '../components/ErrorBlock.vue'
 
 export default {
-  components: { ErrorBlock },
+  components: { ErrorBlock, MongoTable },
   computed: mapState(['token']),
 
   data: () => ({
     err: null,
     members: [],
-    heads: ['아이디/닉네임', '이름', '회원가입일', '이메일', '뉴스레터 동의', '성별', '국가', '제재']
+    schema: {
+      username: { displayName: '아이디', sort: (a, b) => a.localeCompare(b) },
+      fullName: { displayName: '이름', sort: (a, b) => a.localeCompare(b) },
+      joinedDate: { displayName: '회원가입일', sort: (a, b) => moment(a).diff(moment(b)) },
+      email: { displayName: '이메일', sort: (a, b) => a.localeCompare(b) },
+      newsletter: { displayName: '뉴스레터 동의' },
+      gender: { displayName: '성별', sort: (a, b) => a.localeCompare(b) },
+      country: { displayName: '국가', sort: (a, b) => a.localeCompare(b) },
+      remove: { displayName: '제재' }
+    }
   }),
 
   mounted () {
@@ -37,18 +44,13 @@ export default {
   },
 
   methods: {
-    date (string) {
-      return moment(string).format('YYYY-MM-DD HH:mm:ss')
-    },
-
-    mailto (member) {
-      return `mailto:${member.email}`
-    },
-
     getMember () {
       api
         .getMember(this.token)
-        .then(members => (this.members = members))
+        .then(members => {
+          this.err = null
+          this.members = members
+        })
         .catch(err => (this.err = err))
     },
 

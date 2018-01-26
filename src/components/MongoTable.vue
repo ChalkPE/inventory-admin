@@ -1,6 +1,6 @@
 <template lang="pug">
   table.table.is-striped.is-bordered.is-fullwidth
-    thead: tr: th(v-for='slot in schema.slots')
+    thead: tr: th(v-for='slot in slots')
       | {{ slot.displayName }}
       span.icon.is-pulled-right(v-show='slot.sort', @click='toggleSort(slot)')
         span.fa-stack
@@ -9,8 +9,8 @@
             i.fa.fa-stack-1x.fa-sort-desc(v-if='sort.descending')
             i.fa.fa-stack-1x.fa-sort-asc(v-else)
     tbody: tr(v-for='item in sortedList', @click='clickRow(item)', :class='rowClass(item)')
-      td(v-for='slot in schema.slots')
-        slot(:name='slot.key', v-bind='{item, it: item[slot.key]}')
+      td(v-for='slot in slots')
+        slot(:name='slot.key', v-bind='{v: item, it: item[slot.key]}')
 </template>
 
 <script>
@@ -31,6 +31,10 @@ export default {
   }),
 
   computed: {
+    slots () {
+      return Object.entries(this.schema).map(([k, v]) => ({ key: k, ...v }))
+    },
+
     sortedList () {
       if (!this.sort.comparator) return this.list
       const copy = [...this.list].sort(this.sort.comparator)
