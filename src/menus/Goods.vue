@@ -1,6 +1,7 @@
 <template lang="pug">
   section.section: .container
     error-block(:err='err')
+    dummy-select
     h1.title 상품 목록 ({{ posts.length }})
     mongo-table(:schema='schema', :list='posts')
       template(slot-scope='p', slot='productTitle'): b {{ p.it }}
@@ -19,9 +20,10 @@ import { mapState } from 'vuex'
 
 import MongoTable from '../components/MongoTable.vue'
 import ErrorBlock from '../components/ErrorBlock.vue'
+import DummySelect from '../components/DummySelect.vue'
 
 export default {
-  components: { MongoTable, ErrorBlock },
+  components: { MongoTable, ErrorBlock, DummySelect },
   computed: mapState(['token']),
 
   data: () => ({

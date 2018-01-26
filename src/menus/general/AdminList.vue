@@ -1,5 +1,6 @@
 <template lang="pug">
   .block
+    dummy-select
     h1.title 운영자 목록 ({{ admins.length }})
     mongo-table(:list='admins', :schema='schema')
       template(slot-scope='a', slot='username'): b {{ a.it }}
@@ -14,9 +15,10 @@
 import moment from 'moment'
 import { mapState, mapActions } from 'vuex'
 import MongoTable from '../../components/MongoTable.vue'
+import DummySelect from '../../components/DummySelect.vue'
 
 export default {
-  components: { MongoTable },
+  components: { MongoTable, DummySelect },
   computed: mapState(['admins']),
   data: () => ({
     schema: {
