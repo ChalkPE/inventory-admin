@@ -56,6 +56,7 @@ export default {
         this.sort.descending = !this.sort.descending
       } else {
         this.sort.key = slot.key
+        this.sort.descending = false
         this.sort.comparator = (a, b) => slot.sort(a[slot.key], b[slot.key])
       }
     }

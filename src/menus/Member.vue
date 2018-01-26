@@ -7,6 +7,7 @@
       template(slot-scope='m', slot='fullName') {{ m.v.firstName }} {{ m.v.lastName }}
       template(slot-scope='m', slot='joinedDate') {{ m.it | date }}
       template(slot-scope='m', slot='email'): a(:href='m.it | mailto') {{ m.it }}
+      template(slot-scope='m', slot='mobile'): a(:href='m.it | tel') {{ m.it }}
       template(slot-scope='m', slot='newsletter') {{ m.it | bool }}
       template(slot-scope='m', slot='gender') {{ m.it }}
       template(slot-scope='m', slot='country') {{ m.it }}
@@ -32,9 +33,10 @@ export default {
       fullName: { displayName: '이름', sort: (a, b) => a.localeCompare(b) },
       joinedDate: { displayName: '회원가입일', sort: (a, b) => moment(a).diff(moment(b)) },
       email: { displayName: '이메일', sort: (a, b) => a.localeCompare(b) },
-      newsletter: { displayName: '뉴스레터 동의' },
+      mobile: { displayName: '전화번호', sort: (a, b) => a.localeCompare(b) },
       gender: { displayName: '성별', sort: (a, b) => a.localeCompare(b) },
       country: { displayName: '국가', sort: (a, b) => a.localeCompare(b) },
+      newsletter: { displayName: '뉴스레터 동의' },
       remove: { displayName: '제재' }
     }
   }),
