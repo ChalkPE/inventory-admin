@@ -1,32 +1,74 @@
 <template lang="pug">
   section.section: .container
     error-block(:err='err')
-    .block
-      h1.title 상품 목록 ({{ posts.length }})
-      table.table.is-striped.is-bordered.is-fullwidth
-        thead: tr: th(v-for='h in heads') {{ h }}
-        tbody: tr(v-for='post of posts', :key='post.productURL')
-          td: b {{ post.productTitle }}
-          td {{ post.productPrice }}
-          td {{ post.seller }}
-          td {{ date(post.uploadDate) }}
-          td: button.button.is-small(@click='remove(post)') 삭제
+    h1.title 상품 목록 ({{ posts.length }})
+    mongo-table(:schema='schema', :list='posts')
+      template(slot-scope='post', slot='productTitle'): b {{ post.it }}
+      template(slot-scope='post', slot='productSubTitle') {{ post.it }}
+      template(slot-scope='post', slot='productCategory') {{ post.it }}
+      template(slot-scope='post', slot='productPrice') {{ post.it.toFixed(2) }}
+      template(slot-scope='post', slot='seller') {{ post.it }}
+      template(slot-scope='post', slot='uploadDate') {{ post.it | date }}
+      template(slot-scope='post', slot='remove'): button.button.is-small(@click='remove(post.item)') 삭제
 </template>
 
 <script>
 import api from '../api'
 import moment from 'moment'
 import { mapState } from 'vuex'
+
+import MongoTable from '../components/MongoTable.vue'
 import ErrorBlock from '../components/ErrorBlock.vue'
 
 export default {
-  components: { ErrorBlock },
+  components: { MongoTable, ErrorBlock },
   computed: mapState(['token']),
 
   data: () => ({
     err: null,
     posts: [],
-    heads: ['상품명', '판매가', '판매자', '등록일/수정일', '삭제']
+
+    schema: {
+      slots: [
+        {
+          key: 'productTitle',
+          displayName: '상품명',
+          sort: (a, b) => a.localeCompare(b)
+        },
+
+        {
+          key: 'productSubTitle',
+          displayName: '디자이너',
+          sort: (a, b) => a.localeCompare(b)
+        },
+
+        {
+          key: 'productCategory',
+          displayName: '카테고리',
+          sort: (a, b) => a.localeCompare(b)
+        },
+
+        {
+          key: 'productPrice',
+          displayName: '판매가',
+          sort: (a, b) => a - b
+        },
+
+        {
+          key: 'seller',
+          displayName: '판매자',
+          sort: (a, b) => a.localeCompare(b)
+        },
+
+        {
+          key: 'uploadDate',
+          displayName: '등록일/수정일',
+          sort: (a, b) => moment(a).diff(moment(b))
+        },
+
+        { key: 'remove', displayName: '삭제' }
+      ]
+    }
   }),
 
   mounted () {
@@ -34,10 +76,6 @@ export default {
   },
 
   methods: {
-    date (string) {
-      return moment(string).format('YYYY-MM-DD HH:mm:ss')
-    },
-
     getPost () {
       api
         .getPost(this.token)
