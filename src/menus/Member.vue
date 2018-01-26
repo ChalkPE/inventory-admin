@@ -33,7 +33,7 @@ export default {
       fullName: { displayName: '이름', sort: (a, b) => a.localeCompare(b) },
       joinedDate: { displayName: '회원가입일', sort: (a, b) => moment(a).diff(moment(b)) },
       email: { displayName: '이메일', sort: (a, b) => a.localeCompare(b) },
-      mobile: { displayName: '전화번호', sort: (a, b) => a.localeCompare(b) },
+      mobile: { displayName: '전화번호', sort: (a, b) => a - b },
       gender: { displayName: '성별', sort: (a, b) => a.localeCompare(b) },
       country: { displayName: '국가', sort: (a, b) => a.localeCompare(b) },
       newsletter: { displayName: '뉴스레터 동의' },

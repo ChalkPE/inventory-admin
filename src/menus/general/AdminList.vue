@@ -1,35 +1,36 @@
 <template lang="pug">
   .block
     h1.title 운영자 목록 ({{ admins.length }})
-    table.table.is-striped.is-bordered.is-fullwidth
-      thead: tr: th(v-for='h in heads') {{ h }}
-      tbody: tr(v-for='admin of admins', :key='admin.username')
-        td: b {{ admin.username }}
-        td {{ admin.name }}
-        td: a(:href='mailto(admin)') {{ admin.email }}
-        td {{ date(admin.joinedDate) }}
-        td {{ admin.master ? '마스터' : '' }}
-        td: button.button.is-small(@click='remove(admin)') 삭제
+    mongo-table(:list='admins', :schema='schema')
+      template(slot-scope='a', slot='username'): b {{ a.it }}
+      template(slot-scope='a', slot='name') {{ a.it }}
+      template(slot-scope='a', slot='email'): a(:href='a.it | mailto') {{ a.it }}
+      template(slot-scope='a', slot='joinedDate') {{ a.it | date }}
+      template(slot-scope='a', slot='master') {{ a.it ? '마스터' : '' }}
+      template(slot-scope='a', slot='remove'): button.button.is-small(@click='remove(a.v)') 삭제
 </template>
 
 <script>
 import moment from 'moment'
 import { mapState, mapActions } from 'vuex'
+import MongoTable from '../../components/MongoTable.vue'
 
 export default {
+  components: { MongoTable },
   computed: mapState(['admins']),
-  data: () => ({ heads: ['아이디', '이름', '이메일', '등록일', '비고', '삭제'] }),
+  data: () => ({
+    schema: {
+      username: { displayName: '아이디', sort: (a, b) => a.localeCompare(b) },
+      name: { displayName: '이름', sort: (a, b) => a.localeCompare(b) },
+      email: { displayName: '이메일', sort: (a, b) => a.localeCompare(b) },
+      joinedDate: { displayName: '등록일', sort: (a, b) => moment(a).diff(moment(b)) },
+      master: { displayName: '비고' },
+      remove: { displayName: '삭제' }
+    }
+  }),
 
   methods: {
     ...mapActions(['deleteAdmin']),
-
-    mailto (admin) {
-      return `mailto:${admin.email}`
-    },
-
-    date (string) {
-      return moment(string).format('YYYY-MM-DD HH:mm:ss')
-    },
 
     remove (admin) {
       if (!confirm(`${admin.username} 관리자를 제거할까요?`)) return
