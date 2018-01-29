@@ -13,7 +13,6 @@
 
 <script>
 import api from '../api'
-import moment from 'moment'
 import { mapState } from 'vuex'
 
 import MongoTable from '../components/MongoTable.vue'
@@ -30,32 +29,32 @@ export default {
     schema: {
       productTitle: {
         displayName: '상품명',
-        sort: (a, b) => a.localeCompare(b)
+        sort: String
       },
 
       productSubTitle: {
         displayName: '디자이너',
-        sort: (a, b) => a.localeCompare(b)
+        sort: String
       },
 
       productCategory: {
         displayName: '카테고리',
-        sort: (a, b) => a.localeCompare(b)
+        sort: String
       },
 
       productPrice: {
         displayName: '판매가',
-        sort: (a, b) => a - b
+        sort: Number
       },
 
       seller: {
         displayName: '판매자',
-        sort: (a, b) => a.localeCompare(b)
+        sort: String
       },
 
       uploadDate: {
         displayName: '등록일/수정일',
-        sort: (a, b) => moment(a).diff(moment(b))
+        sort: Date
       },
 
       remove: { displayName: '삭제' }

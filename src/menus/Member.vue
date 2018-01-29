@@ -15,7 +15,6 @@
 
 <script>
 import api from '../api'
-import moment from 'moment'
 import { mapState } from 'vuex'
 import MongoTable from '../components/MongoTable.vue'
 import ErrorBlock from '../components/ErrorBlock.vue'
@@ -28,13 +27,13 @@ export default {
     err: null,
     members: [],
     schema: {
-      username: { displayName: '아이디', sort: (a, b) => a.localeCompare(b) },
-      fullName: { displayName: '이름', sort: (a, b) => a.localeCompare(b) },
-      joinedDate: { displayName: '회원가입일', sort: (a, b) => moment(a).diff(moment(b)) },
-      email: { displayName: '이메일', sort: (a, b) => a.localeCompare(b) },
-      mobile: { displayName: '전화번호', sort: (a, b) => a - b },
-      gender: { displayName: '성별', sort: (a, b) => a.localeCompare(b) },
-      country: { displayName: '국가', sort: (a, b) => a.localeCompare(b) },
+      username: { displayName: '아이디', sort: String },
+      fullName: { displayName: '이름', sort: String },
+      joinedDate: { displayName: '회원가입일', sort: Date },
+      email: { displayName: '이메일', sort: String },
+      mobile: { displayName: '전화번호', sort: Number },
+      gender: { displayName: '성별', sort: String },
+      country: { displayName: '국가', sort: String },
       newsletter: { displayName: '뉴스레터 동의' },
       remove: { displayName: '제재' }
     }

@@ -15,11 +15,8 @@ import ErrorBlock from '../components/ErrorBlock.vue'
 
 export default {
   data: () => ({ err: null }),
-  components: { ErrorBlock, AdminList, AdminAdd },
-
   methods: mapActions(['getAdmins']),
-  mounted () {
-    this.getAdmins().catch(err => (this.err = err))
-  }
+  components: { ErrorBlock, AdminList, AdminAdd },
+  mounted () { this.getAdmins().catch(err => (this.err = err)) }
 }
 </script>

@@ -13,10 +13,11 @@
               i.fa.fa-stack-1x.fa-sort-asc(v-else)
       tbody: tr(v-for='item in sortedList', @click='clickRow(item)', :class='rowClass(item)')
         td(v-for='slot in slots')
-        slot(:name='slot.key', v-bind='{v: item, it: item[slot.key]}')
+          slot(:name='slot.key', v-bind='{v: item, it: item[slot.key]}')
 </template>
 
 <script>
+import moment from 'moment'
 import DummySelect from './DummySelect.vue'
 
 export default {
@@ -30,7 +31,6 @@ export default {
 
   data: () => ({
     selected: null,
-
     sort: {
       key: null,
       comparator: null,
@@ -59,19 +59,24 @@ export default {
       return { 'is-selected': item._id === this.selected }
     },
 
-    toggleSort (slot) {
-      if (this.sort.key === slot.key) {
-        this.sort.descending = !this.sort.descending
-      } else {
-        this.sort.key = slot.key
-        this.sort.descending = false
-        this.sort.comparator = (a, b) => slot.sort(a[slot.key], b[slot.key])
+    toggleSort ({ key, sort }) {
+      if (this.sort.key === key) {
+        return (this.sort.descending = !this.sort.descending)
       }
+
+      this.sort.key = key
+      this.sort.descending = false
+
+      const comp = this.findComparator(sort)
+      this.sort.comparator = (a, b) => comp(a[key], b[key])
+    },
+
+    findComparator (sort) {
+      if (sort === Number) return (a, b) => a - b
+      if (sort === String) return (a, b) => a.localeCompare(b)
+      if (sort === Date) return (a, b) => moment(a).diff(moment(b))
+      return sort
     }
   }
 }
 </script>
-
-<style>
-
-</style>

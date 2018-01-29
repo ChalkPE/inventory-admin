@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { mapState, mapActions } from 'vuex'
 import MongoTable from '../components/MongoTable.vue'
 
@@ -18,10 +17,10 @@ export default {
   computed: mapState(['admins']),
   data: () => ({
     schema: {
-      username: { displayName: '아이디', sort: (a, b) => a.localeCompare(b) },
-      name: { displayName: '이름', sort: (a, b) => a.localeCompare(b) },
-      email: { displayName: '이메일', sort: (a, b) => a.localeCompare(b) },
-      joinedDate: { displayName: '등록일', sort: (a, b) => moment(a).diff(moment(b)) },
+      username: { displayName: '아이디', sort: String },
+      name: { displayName: '이름', sort: String },
+      email: { displayName: '이메일', sort: String },
+      joinedDate: { displayName: '등록일', sort: Date },
       master: { displayName: '비고' },
       remove: { displayName: '삭제' }
     }
