@@ -14,8 +14,8 @@
 <script>
 import moment from 'moment'
 import { mapState, mapActions } from 'vuex'
-import MongoTable from '../../components/MongoTable.vue'
-import DummySelect from '../../components/DummySelect.vue'
+import MongoTable from '../components/MongoTable.vue'
+import DummySelect from '../components/DummySelect.vue'
 
 export default {
   components: { MongoTable, DummySelect },

@@ -11,7 +11,7 @@ import { mapActions } from 'vuex'
 
 import AdminAdd from './AdminAdd.vue'
 import AdminList from './AdminList.vue'
-import ErrorBlock from '../../components/ErrorBlock.vue'
+import ErrorBlock from '../components/ErrorBlock.vue'
 
 export default {
   data: () => ({ err: null }),
