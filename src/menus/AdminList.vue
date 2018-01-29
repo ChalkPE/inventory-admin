@@ -1,24 +1,20 @@
 <template lang="pug">
-  .block
-    dummy-select
-    h1.title 운영자 목록 ({{ admins.length }})
-    mongo-table(:list='admins', :schema='schema')
-      template(slot-scope='a', slot='username'): b {{ a.it }}
-      template(slot-scope='a', slot='name') {{ a.it }}
-      template(slot-scope='a', slot='email'): a(:href='a.it | mailto') {{ a.it }}
-      template(slot-scope='a', slot='joinedDate') {{ a.it | date }}
-      template(slot-scope='a', slot='master') {{ a.it ? '마스터' : '' }}
-      template(slot-scope='a', slot='remove'): button.button.is-small(@click='remove(a.v)') 삭제
+  mongo-table(name='운영자', :list='admins', :schema='schema')
+    template(slot-scope='a', slot='username'): b {{ a.it }}
+    template(slot-scope='a', slot='name') {{ a.it }}
+    template(slot-scope='a', slot='email'): a(:href='a.it | mailto') {{ a.it }}
+    template(slot-scope='a', slot='joinedDate') {{ a.it | date }}
+    template(slot-scope='a', slot='master') {{ a.it ? '마스터' : '' }}
+    template(slot-scope='a', slot='remove'): button.button.is-small(@click='remove(a.v)') 삭제
 </template>
 
 <script>
 import moment from 'moment'
 import { mapState, mapActions } from 'vuex'
 import MongoTable from '../components/MongoTable.vue'
-import DummySelect from '../components/DummySelect.vue'
 
 export default {
-  components: { MongoTable, DummySelect },
+  components: { MongoTable },
   computed: mapState(['admins']),
   data: () => ({
     schema: {
