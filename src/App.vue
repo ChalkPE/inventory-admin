@@ -18,3 +18,7 @@ export default {
   }
 }
 </script>
+
+<style>
+  a, a:hover, a:active, a:focus { outline: none; }
+</style>

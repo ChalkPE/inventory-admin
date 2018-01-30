@@ -8,9 +8,9 @@ export default {
     return res.data.token
   },
 
-  async get (token, endpoint, data = {}) {
-    const res = await axios.get('/admin' + endpoint, { data, ...h(token) })
-    return res.data.list
+  async get (token, endpoint, params = {}) {
+    const res = await axios.get('/admin' + endpoint, { params, ...h(token) })
+    return res.data
   },
 
   async deleteAdmin (token, { username }) {

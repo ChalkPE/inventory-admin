@@ -1,7 +1,6 @@
 <template lang="pug">
   section.section: .container
-    error-block(v-if='err', :err='err')
-    mongo-table(v-else, name='상품', :schema='schema', :list='posts')
+    mongo-table(name='상품', endpoint='/post', :schema='schema', :fresh='fresh', @expired='fresh = false', @updated='fresh = true')
       template(slot-scope='p', slot='productTitle'): b {{ p.it }}
       template(slot-scope='p', slot='productSubTitle') {{ p.it }}
       template(slot-scope='p', slot='productCategory') {{ p.it }}
@@ -16,72 +15,33 @@ import api from '../api'
 import { mapState } from 'vuex'
 
 import MongoTable from '../components/MongoTable.vue'
-import ErrorBlock from '../components/ErrorBlock.vue'
 
 export default {
-  components: { MongoTable, ErrorBlock },
+  components: { MongoTable },
   computed: mapState(['token']),
 
   data: () => ({
-    err: null,
-    posts: [],
-
+    fresh: true,
     schema: {
-      productTitle: {
-        displayName: '상품명',
-        sort: String
-      },
-
-      productSubTitle: {
-        displayName: '디자이너',
-        sort: String
-      },
-
-      productCategory: {
-        displayName: '카테고리',
-        sort: String
-      },
-
-      productPrice: {
-        displayName: '판매가',
-        sort: Number
-      },
-
-      seller: {
-        displayName: '판매자',
-        sort: String
-      },
-
-      uploadDate: {
-        displayName: '등록일/수정일',
-        sort: Date
-      },
-
+      productTitle: { displayName: '상품명', sort: String },
+      productSubTitle: { displayName: '디자이너', sort: String },
+      productCategory: { displayName: '카테고리', sort: String },
+      productPrice: { displayName: '판매가', sort: Number },
+      seller: { displayName: '판매자', sort: String },
+      uploadDate: { displayName: '등록일/수정일', sort: Date },
       remove: { displayName: '삭제' }
     }
   }),
 
-  mounted () {
-    this.getPost()
-  },
+  mounted () { this.fresh = false },
 
   methods: {
-    getPost () {
-      api
-        .get(this.token, '/post')
-        .then(posts => {
-          this.err = null
-          this.posts = posts
-        })
-        .catch(err => (this.err = err))
-    },
-
     remove (post) {
       if (!confirm(`${post.productTitle} 상품을 제거할까요?`)) return
 
       api
         .deletePost(this.token, post)
-        .then(() => this.getPost())
+        .then(() => (this.fresh = false))
         .catch(err => alert(err.response.data))
     }
   }

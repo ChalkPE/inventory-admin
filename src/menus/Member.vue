@@ -1,7 +1,6 @@
 <template lang="pug">
   section.section: .container
-    error-block(v-if='err', :err='err')
-    mongo-table(v-else, name='회원', :schema='schema', :list='members')
+    mongo-table(name='회원', endpoint='/user', :schema='schema', :fresh='fresh', @expired='fresh = false', @updated='fresh = true')
       template(slot-scope='m', slot='username'): b {{ m.it }}
       template(slot-scope='m', slot='fullName') {{ m.v.firstName }} {{ m.v.lastName }}
       template(slot-scope='m', slot='joinedDate') {{ m.it | date }}
@@ -17,15 +16,13 @@
 import api from '../api'
 import { mapState } from 'vuex'
 import MongoTable from '../components/MongoTable.vue'
-import ErrorBlock from '../components/ErrorBlock.vue'
 
 export default {
-  components: { ErrorBlock, MongoTable },
+  components: { MongoTable },
   computed: mapState(['token']),
 
   data: () => ({
-    err: null,
-    members: [],
+    fresh: true,
     schema: {
       username: { displayName: '아이디', sort: String },
       fullName: { displayName: '이름', sort: String },
@@ -39,27 +36,15 @@ export default {
     }
   }),
 
-  mounted () {
-    this.getMember()
-  },
+  mounted () { this.fresh = false },
 
   methods: {
-    getMember () {
-      api
-        .get(this.token, '/user')
-        .then(members => {
-          this.err = null
-          this.members = members
-        })
-        .catch(err => (this.err = err))
-    },
-
     remove (member) {
       if (!confirm(`${member.username} 회원님을 제재할까요?`)) return
 
       api
         .deleteMember(this.token, member)
-        .then(() => this.getMember())
+        .then(() => (this.fresh = false))
         .catch(err => alert(err.response.data))
     }
   }
