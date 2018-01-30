@@ -50,6 +50,18 @@ export default {
 
     maxPage () {
       return Math.ceil(this.total / this.size) - 1
+    },
+
+    sortQuery () {
+      return (this.sort.descending ? '-' : '') + this.sort.key
+    },
+
+    query () {
+      return {
+        size: this.size,
+        page: this.page,
+        sort: this.sort.key && this.sortQuery
+      }
     }
   },
 
@@ -57,8 +69,8 @@ export default {
     err: null,
     page: 0,
 
-    size: 5,
-    sizes: [5, 10, 25, 50, 100, 250, 500],
+    size: 10,
+    sizes: [10, 25, 50, 100, 250, 500],
 
     list: [],
     total: 0,
@@ -80,7 +92,7 @@ export default {
       if (fresh) return
 
       api
-        .get(this.token, this.endpoint, { size: this.size, page: this.page })
+        .get(this.token, this.endpoint, this.query)
         .then(({ list, total }) => {
           this.err = null
           this.list = list
@@ -109,12 +121,9 @@ export default {
     },
 
     toggleSort ({ key, sort }) {
-      if (this.sort.key === key) {
-        return (this.sort.descending = !this.sort.descending)
-      }
-
+      this.sort.descending = this.sort.key === key && !this.sort.descending
       this.sort.key = key
-      this.sort.descending = false
+      this.$emit('expired')
     }
   }
 }
