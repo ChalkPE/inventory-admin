@@ -27,7 +27,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import api from '../api'
+import { mapState } from 'vuex'
 
 export default {
   data: () => ({
@@ -39,6 +40,8 @@ export default {
   }),
 
   computed: {
+    ...mapState(['token']),
+
     payload () {
       return {
         username: this.username,
@@ -54,16 +57,15 @@ export default {
   },
 
   methods: {
-    ...mapActions(['addAdmin']),
-
     clear () {
       this.err = null
       this.username = this.password = this.name = this.email = ''
+      this.$emit('added')
     },
 
     submit () {
-      this
-        .addAdmin(this.payload)
+      api
+        .addAdmin(this.token, this.payload)
         .then(() => this.clear())
         .catch(err => (this.err = err))
     }

@@ -11,7 +11,7 @@
             template(v-if='slot.key === sort.key')
               i.fa.fa-stack-1x.fa-sort-desc(v-if='sort.descending')
               i.fa.fa-stack-1x.fa-sort-asc(v-else)
-      tbody: tr(v-for='item in sortedList', @click='clickRow(item)', :class='row(item)')
+      tbody: tr(v-for='item in list', @click='clickRow(item)', :class='row(item)')
         td(v-for='slot in slots')
           slot(:name='slot.key', v-bind='{v: item, it: item[slot.key]}')
 </template>

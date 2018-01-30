@@ -8,8 +8,8 @@ export default {
     return res.data.token
   },
 
-  async getAdmin (token) {
-    const res = await axios.get('/admin', h(token))
+  async get (token, endpoint, data = {}) {
+    const res = await axios.get('/admin' + endpoint, { data, ...h(token) })
     return res.data.list
   },
 
@@ -23,18 +23,8 @@ export default {
     return res.data.success
   },
 
-  async getPost (token) {
-    const res = await axios.get('/admin/post', h(token))
-    return res.data.posts
-  },
-
   async deletePost (token, { productURL }) {
     const res = await axios.delete(`/admin/post/${productURL}`, h(token))
     return res.data.success
-  },
-
-  async getMember (token) {
-    const res = await axios.get('/admin/user', h(token))
-    return res.data.users
   }
 }

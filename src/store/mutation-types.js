@@ -1,2 +1,1 @@
 export const UPDATE_TOKEN = 'UPDATE_TOKEN'
-export const UPDATE_ADMINS = 'UPDATE_ADMINS'

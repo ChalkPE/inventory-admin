@@ -1,7 +1,7 @@
 <template lang="pug">
   section.section: .container
-    error-block(:err='err')
-    mongo-table(name='회원', :schema='schema', :list='members')
+    error-block(v-if='err', :err='err')
+    mongo-table(v-else, name='회원', :schema='schema', :list='members')
       template(slot-scope='m', slot='username'): b {{ m.it }}
       template(slot-scope='m', slot='fullName') {{ m.v.firstName }} {{ m.v.lastName }}
       template(slot-scope='m', slot='joinedDate') {{ m.it | date }}
@@ -46,7 +46,7 @@ export default {
   methods: {
     getMember () {
       api
-        .getMember(this.token)
+        .get(this.token, '/user')
         .then(members => {
           this.err = null
           this.members = members

@@ -1,7 +1,7 @@
 <template lang="pug">
   section.section: .container
-    error-block(:err='err')
-    mongo-table(name='상품', :schema='schema', :list='posts')
+    error-block(v-if='err', :err='err')
+    mongo-table(v-else, name='상품', :schema='schema', :list='posts')
       template(slot-scope='p', slot='productTitle'): b {{ p.it }}
       template(slot-scope='p', slot='productSubTitle') {{ p.it }}
       template(slot-scope='p', slot='productCategory') {{ p.it }}
@@ -68,7 +68,7 @@ export default {
   methods: {
     getPost () {
       api
-        .getPost(this.token)
+        .get(this.token, '/post')
         .then(posts => {
           this.err = null
           this.posts = posts
