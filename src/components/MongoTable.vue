@@ -4,13 +4,13 @@
     .block(v-else)
       nav.level
         .level-left: .level-item
-          h1.title {{ name }} 목록 ({{ page + 1 }}/{{ maxPage + 1 }}, 총 {{ total }}개)
+          h1.title {{ name }} 목록 ({{ page + 1 }}/{{ maxPage + 1 }} 페이지, 총 {{ total }}{{ unit }})
 
         .level-right
           .level-item: a.button(@click='movePage(-1)', :disabled='page === 0') 이전
           .level-item: a.button(@click='movePage(+1)', :disabled='page === maxPage') 다음
           .level-item: .select: select(v-model='size')
-            option(v-for='size of sizes', :value='size') 한 페이지에 {{ size }}개씩 보기
+            option(v-for='size of sizes', :value='size') 한 페이지에 {{ size }}{{ unit }}씩 보기
 
       table.table.is-striped.is-bordered.is-fullwidth
         thead: tr: th(v-for='slot in slots')
@@ -38,7 +38,8 @@ export default {
     name: { type: String, required: true },
     endpoint: { type: String, required: true },
     fresh: { type: Boolean, required: true },
-    schema: { type: Object, required: true }
+    schema: { type: Object, required: true },
+    unit: { type: String, default: '개' }
   },
 
   computed: {
@@ -69,8 +70,8 @@ export default {
     err: null,
     page: 0,
 
-    size: 10,
-    sizes: [10, 25, 50, 100, 250, 500],
+    size: 16,
+    sizes: [...Array(10)].map((v, i) => 2 ** (2 + i)),
 
     list: [],
     total: 0,

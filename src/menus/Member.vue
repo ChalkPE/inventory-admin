@@ -1,6 +1,6 @@
 <template lang="pug">
   section.section: .container
-    mongo-table(name='회원', endpoint='/user', :schema='schema', :fresh='fresh', @expired='fresh = false', @updated='fresh = true')
+    mongo-table(name='회원', unit='명' endpoint='/user', :schema='schema', :fresh='fresh', @expired='fresh = false', @updated='fresh = true')
       template(slot-scope='m', slot='username'): b {{ m.it }}
       template(slot-scope='m', slot='fullName') {{ m.v.firstName }} {{ m.v.lastName }}
       template(slot-scope='m', slot='joinedDate') {{ m.it | date }}

@@ -1,6 +1,6 @@
 <template lang="pug">
   section.section: .container
-    mongo-table(name='운영자', endpoint='', :schema='schema', :fresh='fresh', @expired='fresh = false', @updated='fresh = true')
+    mongo-table(name='운영자', unit='명', endpoint='', :schema='schema', :fresh='fresh', @expired='fresh = false', @updated='fresh = true')
       template(slot-scope='a', slot='username'): b {{ a.it }}
       template(slot-scope='a', slot='name') {{ a.it }}
       template(slot-scope='a', slot='email'): a(:href='a.it | mailto') {{ a.it }}
