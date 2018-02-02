@@ -41,9 +41,13 @@ export default {
   methods: {
     remove (member) {
       if (!confirm(`${member.username} 회원님을 제재할까요?`)) return
+      const amount = Number(prompt(`며칠 동안 ${member.username} 회원님을 제재할까요?`, 3))
+
+      const bannedUntil = new Date()
+      bannedUntil.setDate(bannedUntil.getDate() + amount)
 
       api
-        .deleteMember(this.token, member)
+        .deleteUser(this.token, member, bannedUntil)
         .then(() => (this.fresh = false))
         .catch(err => alert(err.response.data))
     }

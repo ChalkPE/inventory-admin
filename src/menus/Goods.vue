@@ -71,8 +71,8 @@ export default {
       if (!confirm(`${this.post.productTitle} 상품에 달린 ${comment.author}님의 댓글을 제거할까요?`)) return
 
       api
-        .deleteComment(this.token, this.post, comment) // TODO: Implement API
-        .then(() => (this.commentFresh = false))
+        .deleteComment(this.token, comment)
+        .then(() => { this.fresh = this.commentFresh = false })
         .catch(err => alert(err.response.data))
     }
   }
