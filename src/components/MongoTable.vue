@@ -15,7 +15,7 @@
       table.table.is-striped.is-bordered.is-fullwidth
         thead: tr: th(v-for='slot in slots')
           | {{ slot.displayName }}
-          span.icon.is-pulled-right(v-show='slot.sort', @click='toggleSort(slot)')
+          span.icon.is-pulled-right(v-if='slot.sort', @click='toggleSort(slot.key)')
             span.fa-stack
               i.fa.fa-stack-1x.fa-sort.has-text-grey-lighter
               template(v-if='slot.key === sort.key')
@@ -50,7 +50,7 @@ export default {
     },
 
     maxPage () {
-      return Math.ceil(this.total / this.size) - 1
+      return Math.max(0, Math.ceil(this.total / this.size) - 1)
     },
 
     sortQuery () {
@@ -75,7 +75,7 @@ export default {
 
     list: [],
     total: 0,
-    selected: null,
+    selected: {},
 
     sort: {
       key: null,
@@ -106,11 +106,12 @@ export default {
 
   methods: {
     row (item) {
-      return { 'is-selected': item._id === this.selected }
+      return { 'is-selected': item._id === this.selected._id }
     },
 
     clickRow (item) {
-      this.selected = item._id !== this.selected && item._id
+      this.selected = item._id === this.selected._id ? {} : item
+      this.$emit('selected', this.selected)
     },
 
     movePage (amount) {
@@ -121,7 +122,7 @@ export default {
       }
     },
 
-    toggleSort ({ key, sort }) {
+    toggleSort (key) {
       this.sort.descending = this.sort.key === key && !this.sort.descending
       this.sort.key = key
       this.$emit('expired')
