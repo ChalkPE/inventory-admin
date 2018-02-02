@@ -11,7 +11,8 @@ module.exports = {
       },
       babel: {
         presets: ['babel-preset-stage-0']
-      }
+      },
+      publicPath: ''
     }]
   ]
 }
