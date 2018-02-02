@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import menus from './menus'
+import store from './store'
 
 Vue.use(VueRouter)
 
@@ -15,8 +16,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const { $store } = this.a.app
-  const { loggedIn } = $store.getters
+  const { loggedIn } = store.getters
   const { requiresAuth } = to.meta
 
   if (requiresAuth && !loggedIn) return next('/auth')
