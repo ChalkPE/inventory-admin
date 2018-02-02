@@ -9,7 +9,8 @@
       template(slot-scope='m', slot='newsletter') {{ m.it | bool }}
       template(slot-scope='m', slot='gender') {{ m.it }}
       template(slot-scope='m', slot='country') {{ m.it }}
-      template(slot-scope='m', slot='remove'): button.button.is-small(@click='remove(m.v)') 제재
+      template(slot-scope='m', slot='bannedUntil')
+        button.button.is-small(:disabled='isBannedNow(m.v)' @click='remove(m.v)' :title='m.it') 제재{{ isBannedNow(m.v) ? '완료' : '하기' }}
 </template>
 
 <script>
@@ -32,13 +33,17 @@ export default {
       gender: { displayName: '성별', sort: String },
       country: { displayName: '국가', sort: String },
       newsletter: { displayName: '뉴스레터 동의' },
-      remove: { displayName: '제재' }
+      bannedUntil: { displayName: '제재' }
     }
   }),
 
   mounted () { this.fresh = false },
 
   methods: {
+    isBannedNow (member) {
+      return Date.now() < new Date(member.bannedUntil).getTime()
+    },
+
     remove (member) {
       if (!confirm(`${member.username} 회원님을 제재할까요?`)) return
       const amount = Number(prompt(`며칠 동안 ${member.username} 회원님을 제재할까요?`, 3))

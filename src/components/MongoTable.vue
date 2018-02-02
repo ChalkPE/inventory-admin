@@ -21,9 +21,10 @@
               template(v-if='slot.key === sort.key')
                 i.fa.fa-stack-1x.fa-sort-desc(v-if='sort.descending')
                 i.fa.fa-stack-1x.fa-sort-asc(v-else)
-        tbody: tr(v-for='item in list', @click='clickRow(item)', :class='row(item)')
-          td(v-for='slot in slots')
-            slot(:name='slot.key', v-bind='{v: item, it: item[slot.key]}')
+        tbody(v-if='list.length > 0'): tr(v-for='item in list' @click='clickRow(item)' :class='row(item)')
+          td(v-for='slot in slots'): slot(:name='slot.key' v-bind='{v: item, it: item[slot.key]}')
+        tbody(v-else): tr
+          td.has-text-grey.has-text-centered(:colspan='slots.length') {{ name }} 목록이 비어 있습니다.
 </template>
 
 <script>
