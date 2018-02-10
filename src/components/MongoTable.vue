@@ -7,6 +7,7 @@
           h1.title {{ name }} 목록 ({{ page + 1 }}/{{ maxPage + 1 }} 페이지, 총 {{ total }}{{ unit }})
 
         .level-right
+          .level-item: slot(name='level')
           .level-item: a.button(@click='movePage(-1)', :disabled='page === 0') 이전
           .level-item: a.button(@click='movePage(+1)', :disabled='page === maxPage') 다음
           .level-item: .select: select(v-model='size')
