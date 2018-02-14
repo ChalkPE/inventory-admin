@@ -3,7 +3,8 @@
     mongo-table(name='상품' endpoint='/post' :schema='schema' :fresh='fresh' @expired='fresh = false' @updated='fresh = true' @selected='selected')
       template(slot-scope='p' slot='productTitle'): b {{ p.it }}
       template(slot-scope='p' slot='productSubTitle') {{ p.it }}
-      template(slot-scope='p' slot='productCategory') {{ p.it }}
+      template(slot-scope='p' slot='productCategory'): .field: .control: .select.is-small: select
+        option(v-for='c in categories' :selected='p.it === c' @click='selectCategory(p.v, c)') {{ c }}
       template(slot-scope='p' slot='productPrice') {{ p.it.toFixed(2) }}
       template(slot-scope='p' slot='seller') {{ p.it }}
       template(slot-scope='p' slot='uploadDate') {{ p.it | date }}
@@ -29,6 +30,7 @@ export default {
     post: {},
     fresh: true,
     commentFresh: true,
+    categories: ['Tops', 'Bottoms', 'Outerwear', 'Footwear', 'Tailoring', 'Accessories'],
 
     schema: {
       productTitle: { displayName: '상품명', sort: true },
@@ -63,6 +65,15 @@ export default {
 
       api
         .deletePost(this.token, post)
+        .then(() => (this.fresh = false))
+        .catch(err => alert(err.response.data))
+    },
+
+    selectCategory (post, productCategory) {
+      if (post.productCategory === productCategory) return
+
+      api
+        .updatePost(this.token, post, { productCategory })
         .then(() => (this.fresh = false))
         .catch(err => alert(err.response.data))
     },

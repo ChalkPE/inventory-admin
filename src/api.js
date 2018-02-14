@@ -23,6 +23,11 @@ export default {
     return res.data
   },
 
+  async updatePost (jwt, { productURL: u }, params = {}) {
+    const res = await axios.put(`/admin/post/${u}`, null, { params, ...h(jwt) })
+    return res.data
+  },
+
   async deletePost (token, { productURL }) {
     const res = await axios.delete(`/admin/post/${productURL}`, h(token))
     return res.data
