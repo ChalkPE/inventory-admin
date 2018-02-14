@@ -45,8 +45,11 @@ export default {
     },
 
     remove (member) {
-      if (!confirm(`${member.username} 회원님을 제재할까요?`)) return
-      const amount = Number(prompt(`며칠 동안 ${member.username} 회원님을 제재할까요?`, 3))
+      const { username } = member
+      if (!confirm(`${username} 회원님을 제재할까요?`)) return
+
+      const amount = Number(prompt(`며칠 동안 ${username} 회원님을 제재할까요?`, 3))
+      if (isNaN(amount) || amount < 1) return alert('취소되었습니다')
 
       const bannedUntil = new Date()
       bannedUntil.setDate(bannedUntil.getDate() + amount)
